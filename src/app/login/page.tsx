@@ -49,10 +49,10 @@ const Login = () => {
       const res = await signInWithEmailAndPassword(data.email, data.password);
       if (res) {
         toast.success('Login successful!');
-        reset(); // Reset form fields
+        reset(); 
         setTimeout(() => {
           router.push('/');
-        }, 1000); // Redirect after 1 second
+        }, 1000); 
       }
     } catch (e: any) {
       console.error('Sign-in error:', e);

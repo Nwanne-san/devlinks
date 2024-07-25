@@ -9,7 +9,9 @@ export default function Client({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const hideNavbar = pathname === '/login' || pathname === '/register';
+  
+  // Hide Navbar on specific static routes
+  const hideNavbar = pathname === '/login' || pathname === '/register' || pathname.startsWith('/preview');
 
   return (
     <>
