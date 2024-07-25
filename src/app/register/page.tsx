@@ -5,7 +5,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth, db } from '../firebase/config'; // Adjust path as needed
+import { auth, db } from '../firebase/config'; 
 import { doc, setDoc } from 'firebase/firestore';
 import toast, { Toaster } from 'react-hot-toast';
 import logo from '../../../public/assets/logo.svg';
@@ -61,10 +61,10 @@ const Signup = () => {
           createdAt: new Date(),
         });
         toast.success('Sign-up successful! Redirecting to sign-in...');
-        reset(); // Reset the form fields
+        reset(); 
         setTimeout(() => {
-          window.location.href = '/login'; // Redirect after 3 seconds
-        }, 3000);
+          window.location.href = '/login'; 
+        }, 2000);
       } else {
         toast.error('Sign-up failed. Please try again.');
       }

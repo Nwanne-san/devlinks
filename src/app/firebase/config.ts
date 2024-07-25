@@ -4,7 +4,6 @@ import { getAuth, Auth } from "firebase/auth";
 import { getAnalytics, Analytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-// Define the type for the Firebase configuration
 interface FirebaseConfig {
   apiKey: string;
   authDomain: string;

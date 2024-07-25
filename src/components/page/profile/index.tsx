@@ -19,9 +19,7 @@ import {
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast, Toaster } from 'react-hot-toast';
-import Link from 'next/link';
 
-// Updated UserLink type to match the expected format
 interface UserLink {
   id: string;
   platform: string;
@@ -137,7 +135,10 @@ const DesktopPage: React.FC = () => {
         setEmail(data.email);
         setProfilePicture(imageUrl || profilePicture);
 
-        toast.success('Profile updated successfully!');
+        toast.success('Profile updated successfully!',{
+          position: 'bottom-center',
+          style: {backgroundColor: 'black', color: 'white'}
+        });
       } catch (error) {
         console.error('Error updating profile:', error);
         toast.error('Failed to update profile.');
@@ -159,9 +160,7 @@ const DesktopPage: React.FC = () => {
   if (error || !user) {
     return (
       <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>
-
-        
+        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>        
       </div>
     );
   }

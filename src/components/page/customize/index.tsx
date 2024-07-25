@@ -122,7 +122,10 @@ const CustomizeLinks: NextPage = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      const timer = setTimeout(() => {
+        router.push('/login');
+      }, 4000); 
+      return () => clearTimeout(timer);
     }
   }, [user, loading, router]);
 
@@ -141,9 +144,8 @@ const CustomizeLinks: NextPage = () => {
             });
         },
         30 * 60 * 1000
-      ); // 30 minutes
+      ); 
 
-      // Clear timeout if the component unmounts or user changes
       return () => clearTimeout(timeout);
     }
   }, [user]);
@@ -211,12 +213,8 @@ const CustomizeLinks: NextPage = () => {
     setDropdownOpen((prev) => ({ ...prev, [index]: false }));
   };
 
-  const allUrlsValid = links.every((link, index) =>
-    isValidUrl(link.platform, urls[index] || '')
-  );
-
   const saveLinks = async () => {
-    setValidationPerformed(true); // Set validationPerformed to true when save is clicked
+    setValidationPerformed(true); 
 
     if (links.some((link, index) => !urls[index])) {
       toast.error("Links can't be empty");
@@ -228,7 +226,6 @@ const CustomizeLinks: NextPage = () => {
       return;
     }
 
-    // Check if all URLs are valid
     const invalidLinks = links.filter(
       (link, index) => !isValidUrl(link.platform, urls[index] || '')
     );
@@ -239,13 +236,13 @@ const CustomizeLinks: NextPage = () => {
 
     try {
       const promises = links.map((link, index) => {
-        const linkData = { ...link, url: urls[index] || '' }; // Ensure URL is passed correctly
+        const linkData = { ...link, url: urls[index] || '' }; 
         console.log('Saving link:', linkData);
         if (link.id) {
-          // Update existing link
+          
           return updateDoc(doc(db, 'links', link.id), linkData);
         } else {
-          // Add new link
+          
           return addDoc(collection(db, 'links'), {
             ...linkData,
             userId: user.uid,
