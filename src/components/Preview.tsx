@@ -16,6 +16,8 @@ interface Link {
 
 interface PreviewProps {
   links: Link[];
+  profilePicture: string | null;
+  email: string | null;
 }
 
 const platformImages: Record<string, string> = {
@@ -25,7 +27,7 @@ const platformImages: Record<string, string> = {
   Facebook: facebook,
 };
 
-const Preview: FC<PreviewProps> = ({ links, profilePicture }) => {
+const Preview: FC<PreviewProps> = ({ links, profilePicture, email }) => {
   const [user] = useAuthState(auth);
   const [profileData, setProfileData] = useState<{
     firstName?: string;
@@ -85,8 +87,8 @@ const Preview: FC<PreviewProps> = ({ links, profilePicture }) => {
                     {profileData.firstName} {profileData.lastName}
                   </div>
                 )}
-                {profileData.email && (
-                  <div className="text-dark-gray text-sm mt-2">{profileData.email}</div>
+                {email && (
+                  <div className="text-dark-gray text-sm mt-2">{email}</div>
                 )}
               </div>
             </div>
