@@ -1,12 +1,12 @@
-"use client";
-import { FC } from "react";
-import Image from "next/image";
-import innerShape from "../../../../public/assets/Rectangle 15.svg";
-import outerShape from "../../../../public/assets/Subtract.svg";
-import github from "../../../../public/assets/github2.svg";
-import youtube from "../../../../public/assets/youtube2.svg";
-import linkedin from "../../../../public/assets/linkedin2.svg";
-import arrow from "../../../../public/assets/arrow.svg";
+'use client';
+import { FC } from 'react';
+import Image from 'next/image';
+import innerShape from '../../../../public/assets/Rectangle 15.svg';
+import outerShape from '../../../../public/assets/Subtract.svg';
+import github from '../../../../public/assets/github2.svg';
+import youtube from '../../../../public/assets/youtube2.svg';
+import linkedin from '../../../../public/assets/linkedin2.svg';
+import arrow from '../../../../public/assets/arrow.svg';
 
 interface MainLayoutProps {
   links: { platform: string; url: string }[];
@@ -40,7 +40,7 @@ const MainLayout: FC<MainLayoutProps> = ({
       <div className="h-[631px] w-[307px] relative">
         <Image
           className="absolute top-0 left-0"
-          style={{ width: "90%", height: "auto" }}
+          style={{ width: '90%', height: 'auto' }}
           alt="inner shape"
           src={innerShape}
         />
@@ -68,7 +68,9 @@ const MainLayout: FC<MainLayoutProps> = ({
           )}
           {firstName && lastName && (
             <div className="text-center flex justify-center absolute top-[12rem] left-0 right-0 ">
-              <span className="text-black mr-[2rem] text-xl font-semibold">{firstName} {lastName}</span>
+              <span className="text-black mr-[2rem] text-xl font-semibold">
+                {firstName} {lastName}
+              </span>
             </div>
           )}
           {email && (
@@ -82,21 +84,22 @@ const MainLayout: FC<MainLayoutProps> = ({
             <div
               key={index}
               className={`rounded-md w-[13rem] h-11 flex items-center justify-between pl-2 gap-1 text-white ${
-                validLinks[index] && validLinks[index].platform === "GitHub"
-                  ? "bg-black"
+                validLinks[index] && validLinks[index].platform === 'GitHub'
+                  ? 'bg-black'
                   : validLinks[index] &&
-                    validLinks[index].platform === "LinkedIn"
-                  ? "bg-[#2D68FF]"
-                  : validLinks[index] && validLinks[index].platform === "YouTube"
-                  ? "bg-red"
-                  : "bg-dark"
+                      validLinks[index].platform === 'LinkedIn'
+                    ? 'bg-[#2D68FF]'
+                    : validLinks[index] &&
+                        validLinks[index].platform === 'YouTube'
+                      ? 'bg-red'
+                      : 'bg-dark'
               }`}
             >
               {validLinks[index] ? (
                 <>
                   <div className="flex gap-1 items-center mx-1">
                     <Image
-                      src={platformImages[validLinks[index].platform] || ""}
+                      src={platformImages[validLinks[index].platform] || ''}
                       alt={validLinks[index].platform}
                       width={20}
                       height={20}

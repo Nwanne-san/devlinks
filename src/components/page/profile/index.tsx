@@ -113,7 +113,9 @@ const DesktopPage: React.FC = () => {
         links={[]} // Pass your links here if you have any
       />
       <div className="max-w-4xl my-[2rem]  bg-white shadow-md rounded-lg p-8">
-        <h1 className="text-black sm:text-[32px] text-2xl font-bold">Profile Details</h1>
+        <h1 className="text-black sm:text-[32px] text-2xl font-bold">
+          Profile Details
+        </h1>
         <h2 className="text-dark-gray text-base mt-2">
           Add your details to create a personal touch to your profile
         </h2>
@@ -126,27 +128,31 @@ const DesktopPage: React.FC = () => {
               style={{
                 backgroundImage: selectedFile ? `url(${profilePicture})` : ``,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
               }}
             >
               <Image
                 src={selectedFile ? change : upload}
-                alt={selectedFile ? "change" : "upload"}
+                alt={selectedFile ? 'change' : 'upload'}
                 className="mb-2" // Add margin if needed
               />
-              <h4 className={`font-semibold ${selectedFile ? 'text-white' : 'text-secondary'}`}>
+              <h4
+                className={`font-semibold ${selectedFile ? 'text-white' : 'text-secondary'}`}
+              >
                 {selectedFile ? 'Change Image' : '+ Upload Image'}
               </h4>
               <input
                 type="file"
                 ref={fileInputRef}
                 onChange={handleFileChange}
-                style={{ display: "none" }}
+                style={{ display: 'none' }}
                 accept="image/png, image/jpeg"
               />
             </div>
             <h5 className="text-xs text-dark-gray">
-              Image must be below 1024x1024px.<br className='sm:block hidden'/>Use PNG <br className='sm:hidden block'/> or JPG format.
+              Image must be below 1024x1024px.
+              <br className="sm:block hidden" />
+              Use PNG <br className="sm:hidden block" /> or JPG format.
             </h5>
           </div>
         </div>
@@ -167,11 +173,13 @@ const DesktopPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g John"
-                {...register("firstName", { required: "Can't be empty" })}
+                {...register('firstName', { required: "Can't be empty" })}
                 className="w-full rounded-md py-2 border px-[.7rem] border-light-gray text-base outline-none font-normal text-black"
               />
               {errors.firstName && (
-                <span className="text-red-500 absolute top-3 px-4 right-0 text-red text-xs">{errors.firstName.message}</span>
+                <span className="text-red-500 absolute top-3 px-4 right-0 text-red text-xs">
+                  {errors.firstName.message}
+                </span>
               )}
             </div>
             <div className="sm:flex gap-[rem] w-full relative">
@@ -184,11 +192,13 @@ const DesktopPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g Appleseed"
-                {...register("lastName", { required: "Can't be empty" })}
+                {...register('lastName', { required: "Can't be empty" })}
                 className="w-full rounded-md py-2 border px-[.7rem] border-light-gray text-base outline-none text-black"
               />
               {errors.lastName && (
-                <span className="text-red absolute top-3 right-0 px-4 text-xs">{errors.lastName.message}</span>
+                <span className="text-red absolute top-3 right-0 px-4 text-xs">
+                  {errors.lastName.message}
+                </span>
               )}
             </div>
             <div className="sm:flex gap-[rem] w-full">
@@ -201,10 +211,10 @@ const DesktopPage: React.FC = () => {
               <input
                 type="text"
                 placeholder="e.g email@example.com"
-                {...register("email", {
+                {...register('email', {
                   pattern: {
                     value: /^\S+@\S+$/i,
-                    message: "Invalid email address",
+                    message: 'Invalid email address',
                   },
                 })}
                 className="w-full rounded-md py-2 border px-[.7rem] border-light-gray text-base outline-none text-black"

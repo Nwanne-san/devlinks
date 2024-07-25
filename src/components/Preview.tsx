@@ -107,7 +107,9 @@ const Preview: FC<PreviewProps> = ({ links, profilePicture, email }) => {
                     width={20}
                     height={20}
                   />
-                  <span className="text-dark-gray text-sm">{link.platform}</span>
+                  <span className="text-dark-gray text-sm">
+                    {link.platform}
+                  </span>
                 </a>
               ))}
             </div>
