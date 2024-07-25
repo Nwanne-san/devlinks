@@ -6,6 +6,7 @@ import outerShape from '../../../../public/assets/Subtract.svg';
 import github from '../../../../public/assets/github2.svg';
 import youtube from '../../../../public/assets/youtube2.svg';
 import linkedin from '../../../../public/assets/linkedin2.svg';
+import facebook from '../../../../public/assets/facebook.svg';
 import arrow from '../../../../public/assets/arrow.svg';
 
 interface MainLayoutProps {
@@ -20,6 +21,7 @@ const platformImages: Record<string, string> = {
   GitHub: github,
   LinkedIn: linkedin,
   YouTube: youtube,
+  Facebook: facebook,
 };
 
 const MainLayout: FC<MainLayoutProps> = ({
@@ -67,14 +69,14 @@ const MainLayout: FC<MainLayoutProps> = ({
             </>
           )}
           {firstName && lastName && (
-            <div className="text-center flex justify-center absolute top-[12rem] left-0 right-0 ">
+            <div className="text-center absolute top-[12rem] left-0 right-0 ">
               <span className="text-black mr-[2rem] text-xl font-semibold">
                 {firstName} {lastName}
               </span>
             </div>
           )}
           {email && (
-            <div className="text-center flex justify-center absolute top-[14rem] left-0 right-0 ">
+            <div className="text-center absolute top-[14rem] left-0 right-0 ">
               <span className="text-black mr-[2rem] text-sm">{email}</span>
             </div>
           )}
@@ -92,7 +94,10 @@ const MainLayout: FC<MainLayoutProps> = ({
                     : validLinks[index] &&
                         validLinks[index].platform === 'YouTube'
                       ? 'bg-red'
-                      : 'bg-dark'
+                      : validLinks[index] &&
+                          validLinks[index].platform === 'Facebook'
+                        ? 'bg-[#4267B2]'
+                        : 'bg-dark'
               }`}
             >
               {validLinks[index] ? (

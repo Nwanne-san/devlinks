@@ -4,10 +4,11 @@ import Image from 'next/image';
 import { db, auth } from '@/app/firebase/config';
 import { doc, getDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import github from '../../public/assets/github.svg';
-import youtube from '../../public/assets/youtube.svg';
+import github from '../../public/assets/github2.svg';
+import youtube from '../../public/assets/youtube2.svg';
 import facebook from '../../public/assets/facebook.svg';
-import linkedin from '../../public/assets/linkedin.svg';
+import linkedin from '../../public/assets/linkedin2.svg';
+import ArrowRight from '../../public/assets/arrow-right.svg'
 
 interface Link {
   platform: string;
@@ -25,6 +26,13 @@ const platformImages: Record<string, string> = {
   LinkedIn: linkedin,
   YouTube: youtube,
   Facebook: facebook,
+};
+
+const platformColors: Record<string, string> = {
+  GitHub: '#1A1A1A',
+  LinkedIn: '#2D68FF',
+  YouTube: '#EE3939',
+  Facebook:'#4267B2',
 };
 
 const Preview: FC<PreviewProps> = ({ links, profilePicture, email }) => {
@@ -54,18 +62,18 @@ const Preview: FC<PreviewProps> = ({ links, profilePicture, email }) => {
       <div className="relative flex flex-col gap-[60px] lg:gap-[106px] sm:gap-[126px] z-10">
         <div className="w-full top-0 sm:px-6 sm:py-4">
           <nav className="px-6 py-4 rounded-xl bg-white w-full flex justify-center gap-4 sm:gap-0 sm:justify-between items-center">
-            <Link href="/" legacyBehavior>
-              <a className="rounded-lg text-secondary sm:w-fit w-full border border-secondary bg-white px-[27px] py-[11px]">
+            <Link href="/" legacyBehavior className='w-full'>
+              <a className="rounded-lg whitespace-nowrap text-secondary sm:w-fit w-fill text-center border border-secondary bg-white px-[27px] py-[11px]">
                 Back to Editor
               </a>
             </Link>
-            <button className="rounded-lg text-white border sm:w-fit w-full border-secondary bg-secondary px-[40.5px] sm:px-[27px] py-[11px]">
+            <button className="rounded-lg whitespace-nowrap text-white border sm:w-fit w-fit border-secondary bg-secondary px-[40.5px] sm:px-[27px] py-[11px]">
               Share Link
             </button>
           </nav>
         </div>
         <div className="w-full flex justify-center items-center">
-          <div className="h-fit w-[307px] rounded-3xl bg-white flex flex-col py-12 gap-14 items-center">
+          <div className="h-fit sm:w-[307px] w-[237px] rounded-3xl bg-white flex flex-col py-12 gap-14 items-center">
             <div className="flex flex-col gap-[25px] items-center">
               {profilePicture ? (
                 <div className="relative">
@@ -92,25 +100,31 @@ const Preview: FC<PreviewProps> = ({ links, profilePicture, email }) => {
                 )}
               </div>
             </div>
-            <div className="w-full flex flex-col gap-4">
+            <div className="flex gap-[20px] w-full sm:px-14 flex-col top-[16.5rem] left-0 mx-9">
               {links.map((link, index) => (
-                <a
+                <div
                   key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 p-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                  className="rounded-md h-11 w-full flex items-center pl-4 pr-5 py-4 gap-2 justify-between text-white"
+                  style={{ backgroundColor: platformColors[link.platform] }}
                 >
-                  <Image
-                    src={platformImages[link.platform]}
-                    alt={link.platform}
-                    width={20}
-                    height={20}
-                  />
-                  <span className="text-dark-gray text-sm">
-                    {link.platform}
-                  </span>
-                </a>
+                  <div className="flex gap-2 items-center">
+                    <Image
+                      src={platformImages[link.platform]}
+                      alt={link.platform}
+                      width={20}
+                      height={20}
+                    />
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white"
+                    >
+                      {link.platform}
+                    </a>
+                  </div>
+                  <Image src={ArrowRight} alt="arrow" />
+                </div>
               ))}
             </div>
           </div>

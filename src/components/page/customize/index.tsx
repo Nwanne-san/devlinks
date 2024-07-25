@@ -15,25 +15,27 @@ import {
   where,
   updateDoc,
   doc,
+  getDoc,
 } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import github from '../../../../public/assets/github.svg';
-import youtube from '../../../../public/assets/youtube.svg';
-import facebook from '../../../../public/assets/facebook.svg';
+import github from '../../../../public/assets/github2.svg';
+import youtube from '../../../../public/assets/youtube2.svg';
 import chain from '../../../../public/assets/link_2.svg';
-import linkedin from '../../../../public/assets/linkedin.svg';
+import linkedin from '../../../../public/assets/linkedin2.svg';
 import fingerImage from '../../../../public/assets/fingerImage.svg';
+import facebook from '../../../../public/assets/facebook2.svg';
 import { toast, Toaster } from 'react-hot-toast';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
 
-const platforms = ['GitHub', 'LinkedIn', 'YouTube'];
+const platforms = ['GitHub', 'LinkedIn', 'Facebook', 'YouTube'];
 
 const platformDefaultUrls: Record<string, string> = {
   GitHub: 'https://github.com/username',
   LinkedIn: 'https://linkedin.com/in/username',
   YouTube: 'https://youtube.com/channel/username',
+  Facebook: 'https://facebook.com/username',
 };
 
 const platformImages: Record<string, string> = {
@@ -58,6 +60,8 @@ const CustomizeLinks: NextPage = () => {
     {}
   );
   const [showPlaceholder, setShowPlaceholder] = useState<boolean>(true);
+  const [profilePicture, setProfilePicture] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [validationPerformed, setValidationPerformed] =
     useState<boolean>(false);
   const router = useRouter();
@@ -72,9 +76,6 @@ const CustomizeLinks: NextPage = () => {
         ...doc.data(),
       })) as Link[];
 
-      console.log('Fetched links:', linksList);
-
-      // Update both links and urls state
       setLinks(linksList);
       const urlMap = linksList.reduce(
         (acc, link, index) => {
@@ -96,23 +97,34 @@ const CustomizeLinks: NextPage = () => {
   }, [fetchLinks]);
 
   useEffect(() => {
-    if (!loading && !user) {
-      const timer = setTimeout(() => {
-        router.push('/login');
-      }, 2000); // 4 seconds
+    const fetchProfileData = async () => {
+      if (user) {
+        try {
+          const profileDocRef = doc(db, 'profiles', user.uid);
+          const profileDocSnap = await getDoc(profileDocRef);
 
-      return () => clearTimeout(timer);
+          if (profileDocSnap.exists()) {
+            const profileData = profileDocSnap.data() as {
+              imageUrl?: string;
+              email?: string;
+            };
+            setProfilePicture(profileData.imageUrl || null);
+            setEmail(profileData.email ?? null);
+          }
+        } catch (err) {
+          console.error('Error fetching profile data:', err);
+        }
+      }
+    };
+
+    fetchProfileData();
+  }, [user]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
     }
   }, [user, loading, router]);
-
-  
-  
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        router.push('/login');
-      }, 15000); 
-      return () => clearTimeout(timer);
-    }, [router]);
 
   useEffect(() => {
     if (user) {
@@ -140,7 +152,7 @@ const CustomizeLinks: NextPage = () => {
     const regexes: Record<string, RegExp> = {
       GitHub: /^https:\/\/github\.com\/.+/,
       LinkedIn: /^https:\/\/(www\.)?linkedin\.com\/in\/.+/,
-      Twitter: /^https:\/\/twitter\.com\/.+/,
+      Facebook: /^https:\/\/(www\.)?facebook\.com\/.+/,
       YouTube: /^https:\/\/(www\.)?youtube\.com\/(channel|user)\/.+/,
     };
     return regexes[platform]?.test(url) ?? false;
@@ -264,16 +276,16 @@ const CustomizeLinks: NextPage = () => {
     return (
       <div className="text-center flex flex-col items-center justify-center min-h-screen">
         <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>
-
-        
       </div>
     );
   }
-
+  
   return (
     <>
       <div className="flex bg-primary">
         <MainLayout
+          profilePicture={profilePicture || undefined}
+          email={email || undefined}
           links={links.map((link, index) => ({
             platform: link.platform,
             url: urls[index] || platformDefaultUrls[link.platform] || '',
@@ -429,7 +441,7 @@ const CustomizeLinks: NextPage = () => {
               </button>
             </div>
           </div>
-          <Toaster position="top-right" reverseOrder={false} />
+          <Toaster position="bottom-center" reverseOrder={false} />
         </div>
       </div>
     </>
@@ -437,5 +449,3 @@ const CustomizeLinks: NextPage = () => {
 };
 
 export default CustomizeLinks;
-
-// {!urls[index] ? `Can't be empty` : 'Please check the URL'}

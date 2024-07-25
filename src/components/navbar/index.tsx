@@ -1,9 +1,11 @@
 'use client';
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/app/firebase/config';
+import { auth, db } from '@/app/firebase/config';
+import { signOut } from 'firebase/auth';
 
 import logo from '../../../public/assets/logo.svg';
 import logo2 from '../../../public/assets/logo_2.svg';
@@ -21,6 +23,25 @@ const Navbar = () => {
 
   const isLinkActive = pathname === '/';
   const isProfileActive = pathname === '/profile';
+
+  useEffect(() => {
+    if (user) {
+      const timeout = setTimeout(
+        () => {
+          signOut(auth)
+            .then(() => {
+              router.push('/login');
+            })
+            .catch((error) => {
+              console.error('Sign-out error:', error);
+            });
+        },
+        30 * 60 * 1000
+      ); // 30 minutes
+
+      return () => clearTimeout(timeout);
+    }
+  }, [user, router]);
 
   const handleNavigation = (path: string) => {
     if ((path === '/profile' || path === '/preview') && !user) {

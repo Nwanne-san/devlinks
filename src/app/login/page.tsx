@@ -48,7 +48,11 @@ const Login = () => {
     try {
       const res = await signInWithEmailAndPassword(data.email, data.password);
       if (res) {
-        toast.success('Login successful!');
+        toast.success('Login successful!',{
+          duration: 3000,
+          position: 'bottom-center',
+          style: {backgroundColor: 'black', color: 'white'}
+        });
         reset(); 
         setTimeout(() => {
           router.push('/');

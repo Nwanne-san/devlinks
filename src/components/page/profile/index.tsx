@@ -1,15 +1,32 @@
 'use client';
 import React, { useRef, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import MainLayout from '../mainlayout';
 import upload from '../../../../public/assets/upload.svg';
 import change from '../../../../public/assets/change.svg';
 import { db, auth, storage } from '@/app/firebase/config';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast, Toaster } from 'react-hot-toast';
+import Link from 'next/link';
+
+// Updated UserLink type to match the expected format
+interface UserLink {
+  id: string;
+  platform: string;
+  url: string;
+}
 
 interface FormData {
   firstName: string;
@@ -18,7 +35,7 @@ interface FormData {
 }
 
 const DesktopPage: React.FC = () => {
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
   const {
     register,
     handleSubmit,
@@ -30,7 +47,9 @@ const DesktopPage: React.FC = () => {
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [links, setLinks] = useState<UserLink[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
@@ -50,9 +69,33 @@ const DesktopPage: React.FC = () => {
           setEmail(profileData.email || '');
         }
       };
+
+      const fetchLinks = async () => {
+        const linksRef = collection(db, 'links');
+        const q = query(linksRef, where('userId', '==', user.uid));
+        const querySnapshot = await getDocs(q);
+        const userLinks: UserLink[] = [];
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          userLinks.push({ id: doc.id, ...data } as UserLink);
+        });
+        setLinks(userLinks);
+      };
+
       fetchProfile();
+      fetchLinks();
     }
   }, [user, setValue]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      const timer = setTimeout(() => {
+        router.push('/login');
+      }, 4000); 
+
+      return () => clearTimeout(timer);
+    }
+  }, [user, loading, router]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
@@ -89,7 +132,6 @@ const DesktopPage: React.FC = () => {
           imageUrl,
         });
 
-        // Update local state
         setFirstName(data.firstName);
         setLastName(data.lastName);
         setEmail(data.email);
@@ -103,16 +145,37 @@ const DesktopPage: React.FC = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+      <div className="relative w-20 h-20">
+        <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
+        <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
+      </div>
+    </div>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <div className="text-center flex flex-col items-center justify-center min-h-screen">
+        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>
+
+        
+      </div>
+    );
+  }
+  
   return (
-    <div className="lg:flex  bg-primary ">
+    <div className="lg:flex bg-primary">
       <MainLayout
         profilePicture={profilePicture || undefined}
         firstName={firstName}
         lastName={lastName}
         email={email}
-        links={[]} // Pass your links here if you have any
+        links={links}
       />
-      <div className="max-w-4xl my-[2rem]  bg-white shadow-md rounded-lg p-8">
+      <div className="max-w-4xl my-[2rem] bg-white shadow-md rounded-lg p-8">
         <h1 className="text-black sm:text-[32px] text-2xl font-bold">
           Profile Details
         </h1>
@@ -123,10 +186,10 @@ const DesktopPage: React.FC = () => {
           <h3 className="text-base text-dark-gray">Profile picture</h3>
           <div className="flex sm:flex-row flex-col sm:items-center items-start gap-10">
             <div
-              className="border border-purple bg-purple sm:py-[1rem] py-[3rem] sm:px-[2rem] px-[1.5rem]  rounded-md flex flex-col items-center cursor-pointer"
+              className="border border-purple bg-purple sm:py-[1rem] py-[3rem] sm:px-[2rem] px-[1.5rem] rounded-md flex flex-col items-center cursor-pointer"
               onClick={handleUploadClick}
               style={{
-                backgroundImage: selectedFile ? `url(${profilePicture})` : ``,
+                backgroundImage: selectedFile ? `url(${profilePicture})` : '',
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
               }}
@@ -134,7 +197,7 @@ const DesktopPage: React.FC = () => {
               <Image
                 src={selectedFile ? change : upload}
                 alt={selectedFile ? 'change' : 'upload'}
-                className="mb-2" // Add margin if needed
+                className="mb-2"
               />
               <h4
                 className={`font-semibold ${selectedFile ? 'text-white' : 'text-secondary'}`}
