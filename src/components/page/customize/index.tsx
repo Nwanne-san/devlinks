@@ -97,9 +97,22 @@ const CustomizeLinks: NextPage = () => {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push('/login');
+      const timer = setTimeout(() => {
+        router.push('/login');
+      }, 2000); // 4 seconds
+
+      return () => clearTimeout(timer);
     }
   }, [user, loading, router]);
+
+  
+  
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        router.push('/login');
+      }, 15000); 
+      return () => clearTimeout(timer);
+    }, [router]);
 
   useEffect(() => {
     if (user) {
@@ -239,23 +252,20 @@ const CustomizeLinks: NextPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-2 border-[#633CFF]"></div>
+      <div className="relative w-20 h-20">
+        <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
+        <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
       </div>
+    </div>
     );
   }
 
   if (error || !user) {
     return (
       <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <div className="animate-spin flex justify-center items-center rounded-full h-20 w-20 border-t-4 border-b-2 border-[#b32828]"></div>
+        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>
 
-        <p className="text-gray-700 mt-4">Please log in to continue.</p>
-
-        <Link href="/login" legacyBehavior>
-          <a className="text-[#b32828] underline mt-2 font-medium">
-            Go to Login Page
-          </a>
-        </Link>
+        
       </div>
     );
   }
