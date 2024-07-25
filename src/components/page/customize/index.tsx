@@ -24,7 +24,7 @@ import youtube from '../../../../public/assets/youtube2.svg';
 import chain from '../../../../public/assets/link_2.svg';
 import linkedin from '../../../../public/assets/linkedin2.svg';
 import fingerImage from '../../../../public/assets/fingerImage.svg';
-import facebook from '../../../../public/assets/facebook2.svg';
+import facebook from '../../../../public/assets/facebook.svg';
 import { toast, Toaster } from 'react-hot-toast';
 import { signOut } from 'firebase/auth';
 import Link from 'next/link';
