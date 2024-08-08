@@ -19,6 +19,7 @@ import github from '../../../../public/assets/github2.svg';
 import youtube from '../../../../public/assets/youtube2.svg';
 import facebook from '../../../../public/assets/facebook.svg';
 import linkedin from '../../../../public/assets/linkedin2.svg';
+import ArrowRight from '../../../../public/assets/arrow-right.svg';
 
 interface Link {
   platform: string;
@@ -109,16 +110,6 @@ const PreviewPage: FC = () => {
     }
   };
 
-  if (!user || user.uid !== userId) {
-    return (
-      <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <p className="text-gray-700 mt-4 text-xl">
-          You do not have access to this page.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div className="relative bg-white sm:bg-primary min-h-screen w-full">
       <Toaster position="top-right" reverseOrder={false} />
@@ -133,13 +124,13 @@ const PreviewPage: FC = () => {
                   </a>
                 </Link>
               )}
-              <button
-                onClick={handleShareLink}
-                className="rounded-lg whitespace-nowrap text-white border sm:w-fit w-fit border-secondary bg-secondary px-[40.5px] sm:px-[27px] py-[11px]"
-              >
-                Share Link
-              </button>
             </div>
+            <button
+              onClick={handleShareLink}
+              className="rounded-lg whitespace-nowrap text-white border border-secondary bg-secondary px-[40.5px] py-[11px]"
+            >
+              Share Link
+            </button>
           </nav>
         </div>
         <div className="w-full flex justify-center items-center">
@@ -174,34 +165,33 @@ const PreviewPage: FC = () => {
               {links.map((link, index) => (
                 <div
                   key={index}
-                  className="rounded-md h-11 w-full flex items-center px-4 border border-light-gray gap-2"
+                  className="rounded-md h-11 w-full flex items-center pl-4 pr-5 py-4 gap-2 justify-between text-white"
+                  style={{ backgroundColor: platformColors[link.platform] }}
                 >
-                  <div
-                    className="rounded-full w-8 h-8 flex items-center justify-center"
-                    style={{ backgroundColor: platformColors[link.platform] }}
-                  >
+                  <div className="flex gap-2 items-center">
                     <Image
                       src={platformImages[link.platform]}
-                      alt={`${link.platform} icon`}
-                      className="w-5 h-5"
+                      alt={link.platform}
                       width={20}
                       height={20}
                     />
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white"
+                    >
+                      {link.platform}
+                    </a>
                   </div>
-                  <a
-                    href={link.url}
-                    className="text-dark-gray text-sm truncate"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {link.url}
-                  </a>
+                  <Image src={ArrowRight} alt="arrow" />
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+      <div className="sm:flex flex-col gap-[106px] hidden h-[357px] absolute top-0 z-0 p-6 bg-secondary w-full rounded-b-[32px]"></div>
     </div>
   );
 };
