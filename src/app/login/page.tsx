@@ -40,7 +40,8 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const [signInWithEmailAndPassword, , , error] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, , , error] =
+    useSignInWithEmailAndPassword(auth);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -176,7 +177,7 @@ const Login = () => {
                 ></path>
               </svg>
             ) : (
-              "Login"
+              'Login'
             )}
           </button>
         </form>

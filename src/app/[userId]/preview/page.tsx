@@ -1,11 +1,18 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { useRouter, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { auth, db } from '@/app/firebase/config';
-import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import github from '../../../../public/assets/github2.svg';
@@ -36,7 +43,6 @@ const platformColors: Record<string, string> = {
 const PreviewPage: FC = () => {
   const [user] = useAuthState(auth);
   const { userId } = useParams();
-  const router = useRouter();
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [links, setLinks] = useState<Link[]>([]);
   const [email, setEmail] = useState<string | null>(null);
@@ -50,8 +56,8 @@ const PreviewPage: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (user) {
-          const profileDocRef = doc(db, 'profiles', userId || '');
+        if (user && typeof userId === 'string') {
+          const profileDocRef = doc(db, 'profiles', userId);
           const profileDocSnap = await getDoc(profileDocRef);
 
           if (profileDocSnap.exists()) {
@@ -69,7 +75,7 @@ const PreviewPage: FC = () => {
           // Fetch links data
           const linksQuery = query(
             collection(db, 'links'),
-            where('userId', '==', userId || '')
+            where('userId', '==', userId)
           );
           const linksQuerySnapshot = await getDocs(linksQuery);
           const linksData = linksQuerySnapshot.docs.map(

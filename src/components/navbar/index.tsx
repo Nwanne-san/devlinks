@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@/app/firebase/config';
+import { auth } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
 import logo from '../../../public/assets/logo.svg';
 import logo2 from '../../../public/assets/logo_2.svg';
@@ -36,7 +36,7 @@ const Navbar = () => {
             });
         },
         30 * 60 * 1000
-      ); 
+      );
 
       return () => clearTimeout(timeout);
     }

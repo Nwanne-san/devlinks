@@ -89,7 +89,7 @@ const DesktopPage: React.FC = () => {
     if (!loading && !user) {
       const timer = setTimeout(() => {
         router.push('/login');
-      }, 4000); 
+      }, 4000);
 
       return () => clearTimeout(timer);
     }
@@ -135,9 +135,9 @@ const DesktopPage: React.FC = () => {
         setEmail(data.email);
         setProfilePicture(imageUrl || profilePicture);
 
-        toast.success('Profile updated successfully!',{
+        toast.success('Profile updated successfully!', {
           position: 'bottom-center',
-          style: {backgroundColor: 'black', color: 'white'}
+          style: { backgroundColor: 'black', color: 'white' },
         });
       } catch (error) {
         console.error('Error updating profile:', error);
@@ -149,22 +149,22 @@ const DesktopPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-      <div className="relative w-20 h-20">
-        <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
-        <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
+        <div className="relative w-20 h-20">
+          <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
+        </div>
       </div>
-    </div>
     );
   }
 
   if (error || !user) {
     return (
       <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>        
+        <p className="text-gray-700 mt-4 text-xl">Please log in to continue.</p>
       </div>
     );
   }
-  
+
   return (
     <div className="lg:flex bg-primary">
       <MainLayout
