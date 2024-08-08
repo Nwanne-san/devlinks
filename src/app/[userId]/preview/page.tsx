@@ -8,11 +8,11 @@ import { auth, db } from '@/app/firebase/config';
 import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import toast, { Toaster } from 'react-hot-toast';
-import github from '../../../public/assets/github2.svg';
-import youtube from '../../../public/assets/youtube2.svg';
-import facebook from '../../../public/assets/facebook.svg';
-import linkedin from '../../../public/assets/linkedin2.svg';
-import ArrowRight from '../../../public/assets/arrow-right.svg';
+import github from '../../../../public/assets/github2.svg';
+import youtube from '../../../../public/assets/youtube2.svg';
+import facebook from '../../../../public/assets/facebook.svg';
+import linkedin from '../../../../public/assets/linkedin2.svg';
+import ArrowRight from '../../../../public/assets/arrow-right.svg';
 
 interface Link {
   platform: string;
@@ -104,28 +104,24 @@ const PreviewPage: FC = () => {
     }
   };
 
-  if (!user || user.uid !== userId) {
-    return (
-      <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <p className="text-gray-700 mt-4 text-xl">You do not have access to this page.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="relative bg-white sm:bg-primary min-h-screen w-full">
       <Toaster position="top-right" reverseOrder={false} />
       <div className="relative flex flex-col gap-[60px] lg:gap-[106px] sm:gap-[126px] z-10">
         <div className="w-full top-0 sm:px-6 sm:py-4">
-          <nav className="px-6 py-4 rounded-xl bg-white w-full flex justify-center gap-4 sm:gap-0 sm:justify-between items-center">
-          <Link href="/" legacyBehavior className="w-full">
-              <a className="rounded-lg whitespace-nowrap text-secondary sm:w-fit w-fill text-center border border-secondary bg-white px-[27px] py-[11px]">
-                Back to Editor
-              </a>
-            </Link>
+          <nav className="px-6 py-4 rounded-xl bg-white w-full flex justify-between items-center">
+            <div className="flex items-center gap-4">
+              {user.uid === userId && (
+                <Link href="/" legacyBehavior>
+                  <a className="rounded-lg whitespace-nowrap text-secondary text-center border border-secondary bg-white px-[27px] py-[11px]">
+                    Back to Editor
+                  </a>
+                </Link>
+              )}
+            </div>
             <button
               onClick={handleShareLink}
-              className="rounded-lg whitespace-nowrap text-white border sm:w-fit w-fit border-secondary bg-secondary px-[40.5px] sm:px-[27px] py-[11px]"
+              className="rounded-lg whitespace-nowrap text-white border border-secondary bg-secondary px-[40.5px] py-[11px]"
             >
               Share Link
             </button>

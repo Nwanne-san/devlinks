@@ -124,7 +124,7 @@ const CustomizeLinks: NextPage = () => {
     if (!loading && !user) {
       const timer = setTimeout(() => {
         router.push('/login');
-      }, 4000); 
+      }, 2000); 
       return () => clearTimeout(timer);
     }
   }, [user, loading, router]);

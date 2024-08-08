@@ -12,7 +12,7 @@ export default function Client({
   const hideNavbar =
     pathname === '/login' ||
     pathname === '/register' ||
-    pathname.startsWith('/preview');
+    pathname.match(/^\/[^/]+\/preview$/);
   return (
     <>
       {!hideNavbar && <Navbar />}

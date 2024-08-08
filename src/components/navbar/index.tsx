@@ -6,7 +6,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '@/app/firebase/config';
 import { signOut } from 'firebase/auth';
-
 import logo from '../../../public/assets/logo.svg';
 import logo2 from '../../../public/assets/logo_2.svg';
 import link from '../../../public/assets/link.svg';
@@ -49,6 +48,14 @@ const Navbar = () => {
       return;
     }
     router.push(path);
+  };
+
+  const handlePreviewNavigation = () => {
+    if (user) {
+      router.push(`/${user.uid}/preview`);
+    } else {
+      router.push('/login');
+    }
   };
 
   return (
@@ -101,16 +108,18 @@ const Navbar = () => {
           )}
         </div>
 
-        <Link href={'/preview'}>
-          <button className="border-secondary border px-5 py-1.5 rounded-md text-secondary font-semibold sm:block hidden">
-            Preview
-          </button>
-          <Image
-            src={eye}
-            alt="eye"
-            className="sm:hidden block border border-secondary px-3.5 py-2 w-[3rem] rounded "
-          />
-        </Link>
+        <button
+          onClick={handlePreviewNavigation}
+          className="border-secondary border px-5 py-1.5 rounded-md text-secondary font-semibold sm:block hidden"
+        >
+          Preview
+        </button>
+        <Image
+          src={eye}
+          alt="eye"
+          className="sm:hidden block border border-secondary px-3.5 py-2 w-[3rem] rounded"
+          onClick={handlePreviewNavigation}
+        />
       </div>
     </section>
   );
