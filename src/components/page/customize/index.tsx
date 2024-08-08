@@ -124,7 +124,7 @@ const CustomizeLinks: NextPage = () => {
     if (!loading && !user) {
       const timer = setTimeout(() => {
         router.push('/login');
-      }, 2000); 
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [user, loading, router]);
@@ -144,7 +144,7 @@ const CustomizeLinks: NextPage = () => {
             });
         },
         30 * 60 * 1000
-      ); 
+      );
 
       return () => clearTimeout(timeout);
     }
@@ -214,7 +214,7 @@ const CustomizeLinks: NextPage = () => {
   };
 
   const saveLinks = async () => {
-    setValidationPerformed(true); 
+    setValidationPerformed(true);
 
     if (links.some((link, index) => !urls[index])) {
       toast.error("Links can't be empty");
@@ -236,13 +236,11 @@ const CustomizeLinks: NextPage = () => {
 
     try {
       const promises = links.map((link, index) => {
-        const linkData = { ...link, url: urls[index] || '' }; 
+        const linkData = { ...link, url: urls[index] || '' };
         console.log('Saving link:', linkData);
         if (link.id) {
-          
           return updateDoc(doc(db, 'links', link.id), linkData);
         } else {
-          
           return addDoc(collection(db, 'links'), {
             ...linkData,
             userId: user.uid,
@@ -261,11 +259,11 @@ const CustomizeLinks: NextPage = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-      <div className="relative w-20 h-20">
-        <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
-        <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
+        <div className="relative w-20 h-20">
+          <div className="absolute inset-0 border-4 border-t-4 border-t-[#633CFF] border-transparent rounded-full animate-spin"></div>
+          <div className="absolute inset-0 border-4 border-b-4 border-b-[#633CFF] border-transparent rounded-full animate-pulse"></div>
+        </div>
       </div>
-    </div>
     );
   }
 
@@ -276,7 +274,7 @@ const CustomizeLinks: NextPage = () => {
       </div>
     );
   }
-  
+
   return (
     <>
       <div className="flex bg-primary">

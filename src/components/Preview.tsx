@@ -5,7 +5,14 @@ import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { auth, db } from '@/app/firebase/config';
-import { doc, getDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import github from '../../../public/assets/github2.svg';
@@ -107,7 +114,9 @@ const PreviewPage: FC = () => {
   if (!user || user.uid !== userId) {
     return (
       <div className="text-center flex flex-col items-center justify-center min-h-screen">
-        <p className="text-gray-700 mt-4 text-xl">You do not have access to this page.</p>
+        <p className="text-gray-700 mt-4 text-xl">
+          You do not have access to this page.
+        </p>
       </div>
     );
   }
@@ -118,7 +127,7 @@ const PreviewPage: FC = () => {
       <div className="relative flex flex-col gap-[60px] lg:gap-[106px] sm:gap-[126px] z-10">
         <div className="w-full top-0 sm:px-6 sm:py-4">
           <nav className="px-6 py-4 rounded-xl bg-white w-full flex justify-center gap-4 sm:gap-0 sm:justify-between items-center">
-          <Link href="/" legacyBehavior className="w-full">
+            <Link href="/" legacyBehavior className="w-full">
               <a className="rounded-lg whitespace-nowrap text-secondary sm:w-fit w-fill text-center border border-secondary bg-white px-[27px] py-[11px]">
                 Back to Editor
               </a>
