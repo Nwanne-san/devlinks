@@ -13,7 +13,6 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import toast, { Toaster } from 'react-hot-toast';
 import github from '../../../../public/assets/github2.svg';
 import youtube from '../../../../public/assets/youtube2.svg';
@@ -41,7 +40,6 @@ const platformColors: Record<string, string> = {
 };
 
 const PreviewPage: FC = () => {
-  const [user] = useAuthState(auth);
   const { userId } = useParams();
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
   const [links, setLinks] = useState<Link[]>([]);
@@ -56,7 +54,8 @@ const PreviewPage: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (user && typeof userId === 'string') {
+        if (typeof userId === 'string') {
+          // Fetch profile data
           const profileDocRef = doc(db, 'profiles', userId);
           const profileDocSnap = await getDoc(profileDocRef);
 
@@ -90,7 +89,7 @@ const PreviewPage: FC = () => {
     };
 
     fetchData();
-  }, [user, userId]);
+  }, [userId]);
 
   const handleShareLink = async () => {
     try {
@@ -117,7 +116,8 @@ const PreviewPage: FC = () => {
         <div className="w-full top-0 sm:px-6 sm:py-4">
           <nav className="px-6 py-4 rounded-xl bg-white w-full flex justify-between items-center">
             <div className="flex items-center gap-4">
-              {user && user.uid === userId && (
+              {/* Show "Back to Editor" link only if user is logged in and userId matches */}
+              {auth.currentUser && auth.currentUser.uid === userId && (
                 <Link href="/" legacyBehavior>
                   <a className="rounded-lg whitespace-nowrap text-secondary text-center border border-secondary bg-white px-[27px] py-[11px]">
                     Back to Editor
