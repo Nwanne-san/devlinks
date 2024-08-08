@@ -43,7 +43,7 @@ const Signup = () => {
     resolver: yupResolver(schema),
   });
 
-  const [createUserWithEmailAndPassword, , , firebaseError] =
+  const [createUserWithEmailAndPassword, , ,] =
     useCreateUserWithEmailAndPassword(auth);
 
   const [isLoading, setIsLoading] = useState(false);

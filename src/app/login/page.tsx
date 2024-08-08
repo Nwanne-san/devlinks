@@ -40,8 +40,7 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const [signInWithEmailAndPassword, , , error] =
-    useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, , ,] = useSignInWithEmailAndPassword(auth);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
